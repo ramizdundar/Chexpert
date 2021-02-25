@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(description='Test model')
 
 parser.add_argument('--model_path', default='./', metavar='MODEL_PATH',
                     type=str, help="Path to the trained models")
-parser.add_argument('--in_csv_path', default='dev.csv', metavar='IN_CSV_PATH',
+parser.add_argument('--in_csv_path', default="C:\\Dosyalar\\chexpert\\CheXpert-v1.0-small\\valid.csv", metavar='IN_CSV_PATH',
                     type=str, help="Path to the input image path in csv")
 parser.add_argument('--out_csv_path', default='test/test.csv',
                     metavar='OUT_CSV_PATH', type=str,
@@ -101,9 +101,13 @@ def run(args):
 
     model = Classifier(cfg)
     model = DataParallel(model, device_ids=device_ids).to(device).eval()
-    ckpt_path = os.path.join(args.model_path, 'best1.ckpt')
-    ckpt = torch.load(ckpt_path, map_location=device)
-    model.module.load_state_dict(ckpt['state_dict'])
+    # ckpt_path = os.path.join(args.model_path, 'best1.ckpt')
+
+
+    ckpt = torch.load("C:\\GIT\\z_others\\Chexpert\\config\\pre_train.pth", map_location=device)
+    model.module.load_state_dict(ckpt)
+    # ckpt = torch.load(ckpt_path, map_location=device)
+    # model.module.load_state_dict(ckpt['state_dict'])
 
     dataloader_test = DataLoader(
         ImageDataset(args.in_csv_path, cfg, mode='test'),

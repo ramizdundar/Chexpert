@@ -132,7 +132,7 @@ class Classifier(nn.Module):
         # (N, C, H, W)
         feat_map = self.backbone(x)
         # [(N, 1), (N,1),...]
-        logits = list()
+        """logits = list()
         # [(N, H, W), (N, H, W),...]
         logit_maps = list()
         for index, num_class in enumerate(self.cfg.num_classes):
@@ -158,6 +158,6 @@ class Classifier(nn.Module):
             logit = classifier(feat)
             # (N, num_class)
             logit = logit.squeeze(-1).squeeze(-1)
-            logits.append(logit)
+            logits.append(logit)"""
 
-        return (logits, logit_maps)
+        return feat_map

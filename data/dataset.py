@@ -46,7 +46,8 @@ class ImageDataset(Dataset):
                 # labels = ([self.dict.get(n, n) for n in fields[5:]])
                 labels = list(map(int, labels))
                 self._image_paths.append(image_path)
-                assert os.path.exists(image_path), image_path
+                # image_path = "C:\\Dosyalar\\chexpert\\" + image_path
+                # assert os.path.exists(image_path), image_path
                 self._labels.append(labels)
                 if flg_enhance and self._mode == 'train':
                     for i in range(self.cfg.enhance_times):
@@ -58,7 +59,7 @@ class ImageDataset(Dataset):
         return self._num_image
 
     def __getitem__(self, idx):
-        image = cv2.imread(self._image_paths[idx], 0)
+        image = cv2.imread("C:/Dosyalar/chexpert/" + self._image_paths[idx], 0)
         image = Image.fromarray(image)
         if self._mode == 'train':
             image = GetTransforms(image, type=self.cfg.use_transforms_type)
@@ -67,7 +68,6 @@ class ImageDataset(Dataset):
         labels = np.array(self._labels[idx]).astype(np.float32)
 
         path = self._image_paths[idx]
-
         if self._mode == 'train' or self._mode == 'dev':
             return (image, labels)
         elif self._mode == 'test':
